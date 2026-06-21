@@ -13,9 +13,9 @@ trait ApiResponse
     protected function successResponse($message, $data = [], int $code = 200): JsonResponse
     {
         return response()->json([
-            'status'  => true,
+            'status' => true,
             'message' => $message,
-            'data'    => $data,
+            'data' => $data,
         ], $code);
     }
 
@@ -25,10 +25,10 @@ trait ApiResponse
     protected function errorResponse($message, $codeKey = 'ERROR', $code = 422, $errors = []): JsonResponse
     {
         return response()->json([
-            'status'  => false,
+            'status' => false,
             'message' => $message,
-            'code'    => $codeKey,
-            'errors'  => $errors,
+            'code' => $codeKey,
+            'errors' => $errors,
         ], $code);
     }
 
@@ -47,11 +47,12 @@ trait ApiResponse
             'file' => $e->getFile(),
             'line' => $e->getLine(),
         ]);
+
         return $this->errorResponse(
-            "Something went wrong.",
+            'Something went wrong.',
             'EXCEPTION',
             500,
-            new \stdClass()
+            new \stdClass
         );
     }
 }

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers\Api\V1\Profile;
 
 use App\Http\Controllers\Controller;
@@ -8,14 +9,19 @@ class ProfileController extends Controller
 {
     public function profile(): JsonResponse
     {
-        // dd("hello");
         $userUuid = request()->attributes->get('user');
 
-        return response()->json([
-            'success' => false,
-            'message' => 'Profile not found',
-            'data' => $userUuid,
-        ], 200);
+        if (! $userUuid) {
+            return $this->errorResponse('User not found', 'USER_NOT_FOUND', 404);
+        }
+
+        return $this->successResponse('Fetch profile successful', $userUuid);
+
+        // return response()->json([
+        //     'success' => true,
+        //     'message' => 'Fetch profile successful',
+        //     'data' => $userUuid,
+        // ], 200);
 
         // dd(request(), Auth::user());
 
@@ -43,9 +49,9 @@ class ProfileController extends Controller
         //         'created_at'       => $profile->created_at,
         //     ]
         // ]);
-        return response()->json([
-            'success' => false,
-            'message' => 'Profile not found',
-        ], 404);
+        // return response()->json([
+        //     'success' => false,
+        //     'message' => 'Profile not found',
+        // ], 404);
     }
 }

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Middleware;
 
 use Closure;
@@ -34,7 +35,7 @@ class VerifyJwtToken
             $request->attributes->set('user_id', $payload->sub);
             $request->attributes->set('user', $payload->user);
 
-            $request->attributes->set('company_id', $payload->company_id);
+            // $request->attributes->set('company_id', $payload->company_id);
 
         } catch (\Exception $e) {
 
@@ -42,6 +43,7 @@ class VerifyJwtToken
                 'message' => 'Invalid Token',
             ], 401);
         }
+
         return $next($request);
     }
 }
