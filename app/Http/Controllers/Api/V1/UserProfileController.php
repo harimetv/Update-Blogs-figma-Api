@@ -4,9 +4,9 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\V1\ProfileUpdateRequest;
-use App\Http\Requests\Api\V1\StoreArtistProfileRequest;
-use App\Http\Requests\Api\V1\StoreUserFavoriteRequest;
-use App\Http\Requests\Api\V1\StoreUserLifestyleRequest;
+use App\Http\Requests\StoreArtistProfileRequest;
+use App\Http\Requests\StoreUserFavoriteRequest;
+use App\Http\Requests\User\StoreUserLifestyleRequest;
 use App\Models\ArtistProfile;
 use App\Models\Comfortable;
 use App\Models\Hobby;
@@ -30,12 +30,6 @@ class UserProfileController extends Controller
         $this->user = request()->attributes->get('user');
         $this->userId = $this->user->id;
     }
-
-    // protected $userId;
-    // public function __construct($user = null)
-    // {
-    //     $this->user = request()->attributes->get('user');
-    // }
 
     public function getProfile(Request $request)
     {
