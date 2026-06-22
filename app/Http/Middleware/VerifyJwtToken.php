@@ -25,7 +25,7 @@ class VerifyJwtToken
             ], 401);
         }
 
-        try {
+        // try {
 
             $publicKey = file_get_contents(storage_path('keys/public.key'));
 
@@ -37,12 +37,12 @@ class VerifyJwtToken
 
             // $request->attributes->set('company_id', $payload->company_id);
 
-        } catch (\Exception $e) {
+        // } catch (\Exception $e) {
 
-            return response()->json([
-                'message' => 'Invalid Token',
-            ], 401);
-        }
+        //     return response()->json([
+        //         'message' => 'Invalid Token',
+        //     ], 401);
+        // }
 
         return $next($request);
     }

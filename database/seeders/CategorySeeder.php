@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Category;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
 
@@ -77,7 +78,7 @@ class CategorySeeder extends Seeder
             'Robotics & Automation',
             'Virtual Reality (VR)',
             'Augmented Reality (AR)',
-            'Internet of Things (IoT)',
+            'Internet of Things (IoT)'
         ];
         $categories = [
             // Software Development
@@ -137,7 +138,7 @@ class CategorySeeder extends Seeder
             // Education & Learning
             'Online Learning', 'Study Tips', 'Language Learning', 'Educational Technology',
             'STEM Education', 'Art & Humanities', 'Exam Preparation', 'Research & Writing',
-            'Homeschooling', 'Scholarships & Grants', 'Science Communication',
+            'Homeschooling', 'Scholarships & Grants', 'Science Communication'
         ];
         foreach ($categories as $name) {
             $data['name'] = $name;

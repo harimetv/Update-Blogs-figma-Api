@@ -3,26 +3,44 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
-
+use App\Http\Requests\Api\V1\ProfileUpdateRequest;
+use App\Http\Requests\Api\V1\StoreArtistProfileRequest;
+use App\Http\Requests\Api\V1\StoreUserFavoriteRequest;
+use App\Http\Requests\Api\V1\StoreUserLifestyleRequest;
+use App\Models\ArtistProfile;
+use App\Models\Comfortable;
+use App\Models\Hobby;
+use App\Models\InterestIn;
+use App\Models\Language;
+use App\Models\UserFavorite;
+use App\Models\UserLifestyle;
+use App\Services\User\ProfileService;
+use App\Services\User\UserService;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use App\Constants\ResponseCode;
 class UserProfileController extends Controller
 {
-    protected $userService;
-
     protected $profileService;
-
     protected $user;
-
-    public function __construct()
+    protected $userId;
+    public function __construct(ProfileService $profileService)
     {
-        $this->userService = app(UserService::class);
-        $this->profileService = app(ProfileService::class);
-        $this->user = Auth::user();
+        $this->profileService = $profileService;
+        $this->user = request()->attributes->get('user');
+        $this->userId = $this->user->id;
     }
+
+    // protected $userId;
+    // public function __construct($user = null)
+    // {
+    //     $this->user = request()->attributes->get('user');
+    // }
 
     public function getProfile(Request $request)
     {
         try {
-            $profile = $this->userService->find(['id' => $this->user->id]);
+            // $profile = $this->userService->find(['id' => $this->user->id]);
 
             return $this->successResponse(
                 'Profile fetched successfully11',
@@ -45,9 +63,8 @@ class UserProfileController extends Controller
     public function updateProfile(ProfileUpdateRequest $request)
     {
         $validated = $request->validated();
-        // dd($validated);
         try {
-            $profile = $this->profileService->profileUpdate($validated, $this->user);
+            $profile = $this->profileService->profileUpdate($validated, $this->userId);
 
             return $this->successResponse(
                 'Profile updated successfully',

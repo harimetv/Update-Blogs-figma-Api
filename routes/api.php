@@ -7,6 +7,8 @@ use App\Http\Controllers\Api\V1\SocialController;
 use App\Http\Controllers\Api\V1\WorkExperienceController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\V1\CommonController;
+use App\Http\Controllers\Api\V1\UserProfileController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -20,7 +22,7 @@ Route::prefix('v1/auth')->group(function () {
     Route::middleware('verify.jwt')->group(function () {
 
         Route::get('profile', [ProfileController::class, 'profile']);
-        Route::get('me', [AuthController::class, 'me']);
+        // Route::get('me', [AuthController::class, 'me']);
 
         Route::prefix('common')->group(function () {
             Route::get('/get-industries', [CommonController::class, 'industries']);
