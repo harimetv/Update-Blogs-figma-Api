@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-
+use Illuminate\Database\Eloquent\Casts\Attribute;
 class EducationDetail extends Model
 {
     use HasFactory;
@@ -32,14 +32,20 @@ class EducationDetail extends Model
         'end_date' => 'date',
     ];
 
-    public function user(): BelongsTo
-    {
-        return $this->belongsTo(User::class);
-    }
-
     public function study(): BelongsTo
     {
         return $this->belongsTo(Study::class);
+    }
+
+    public function media() : Attribute{
+        return Attribute::make(
+            get: function ($value) {
+                if (!$value) {
+                    return null;
+                }
+                return getImageUrl($value);
+            }
+        );
     }
 
     public function skills(): BelongsToMany

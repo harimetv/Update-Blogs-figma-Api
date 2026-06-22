@@ -17,9 +17,13 @@ class CareerController extends Controller
 {
     protected CareerService $careerService;
 
+    protected $user;
+    protected $userId;
     public function __construct(CareerService $careerService)
     {
         $this->careerService = $careerService;
+        $this->user = request()->attributes->get('user');
+        $this->userId = $this->user->id;
     }
 
     /**
@@ -29,10 +33,8 @@ class CareerController extends Controller
      */
     public function storeOrUpdate(CareerRequest $request)
     {
-        try {
-            $careerId = $request->route('career_id');
-
-            // If updating, check if user owns the career
+        // try {
+            $careerId = $request->career_id;
             if ($careerId && ! $this->careerService->isCareerOwner($careerId)) {
                 return $this->errorResponse(
                     'You are not authorized to update this career detail.',
@@ -46,16 +48,16 @@ class CareerController extends Controller
             $message = $careerId ? 'Career details updated successfully' : 'Career details created successfully';
 
             return $this->successResponse(
-                $message,
-                new CareerResource($career->load(['user', 'workExperiences']))
+                $message,$career
+                // new CareerResource($career->load(['workExperiences']))
             );
-        } catch (\Exception $e) {
-            Log::error('Career store/update error: '.$e->getMessage(), [
-                'trace' => $e->getTraceAsString(),
-            ]);
+        // } catch (\Exception $e) {
+        //     Log::error('Career store/update error: '.$e->getMessage(), [
+        //         'trace' => $e->getTraceAsString(),
+        //     ]);
 
-            return $this->handleException($e, 'Failed to save career details');
-        }
+        //     return $this->handleException($e, 'Failed to save career details');
+        // }
     }
 
     /**
@@ -78,7 +80,7 @@ class CareerController extends Controller
             //     $query->orderBy('start_date', 'desc');
             // }])->get();
             // $careers = CareerDetail::with('workExperience')->where('user_id', Auth::id())->get();
-            $careers = CareerDetail::where('user_id', Auth::id())->get();
+            $careers = CareerDetail::where('user_id', $this->userId)->get();
 
             return $this->successResponse(
                 'Career details retrieved successfully', $careers
@@ -100,7 +102,7 @@ class CareerController extends Controller
     {
         try {
             // $career = $this->careerService->getCareerById($careerId);
-            $career = CareerDetail::where('user_id', Auth::id())->where('id', $careerId)->first();
+            $career = CareerDetail::where('user_id', $this->userId)->where('id', $careerId)->first();
             // Check if user can view this career
             // if ($career->user_id !== auth()->id() && $career->person === 'onlyme') {
             //     return $this->errorResponse(
@@ -131,7 +133,7 @@ class CareerController extends Controller
         $careerId = $request->input('career_id');
         try {
 
-            $career = CareerDetail::where('user_id', Auth::id())->where('id', $careerId)
+            $career = CareerDetail::where('user_id', $this->userId)->where('id', $careerId)
                 ->first();
 
             if (empty($career)) {

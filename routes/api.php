@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\V1\CommonController;
 use App\Http\Controllers\Api\V1\UserProfileController;
-
+use App\Http\Controllers\Api\V1\EducationDetailController;
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
@@ -60,6 +60,8 @@ Route::prefix('v1/auth')->group(function () {
             Route::get('/get-career-details-by-id/{careerId}', [CareerController::class, 'show']);
             Route::post('/delete-career-details', [CareerController::class, 'deleteCareer']);
         });
+
+        Route::apiResource('education-details', EducationDetailController::class);
 
     });
 

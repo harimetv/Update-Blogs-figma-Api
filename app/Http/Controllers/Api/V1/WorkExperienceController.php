@@ -11,10 +11,13 @@ use Illuminate\Http\Request;
 class WorkExperienceController extends Controller
 {
     protected WorkExperienceService $workExperienceService;
-
+    protected $user;
+    protected $userId;
     public function __construct(WorkExperienceService $workExperienceService)
     {
         $this->workExperienceService = $workExperienceService;
+        $this->user = request()->attributes->get('user');
+        $this->userId = $this->user->id;
     }
 
     public function index(Request $request): JsonResponse

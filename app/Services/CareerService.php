@@ -10,9 +10,13 @@ use Illuminate\Support\Facades\DB;
 
 class CareerService
 {
-    /**
-     * Create or update career details
-     */
+    protected $user;
+    protected $userId;
+    public function __construct()
+    {
+        $this->user = request()->attributes->get('user');
+        $this->userId = $this->user->id;
+    }
     public function saveCareer(array $data, ?int $careerId = null): CareerDetail
     {
         return DB::transaction(function () use ($data, $careerId) {
@@ -29,7 +33,7 @@ class CareerService
                 ]);
             } else {
                 $career = CareerDetail::create([
-                    'user_id' => auth()->id(),
+                    'user_id' => $this->userId,
                     'headline' => $data['headline'] ?? null,
                     'career_description' => $data['career_description'] ?? null,
                     'work_experience_id' => isset($data['work_experience_ids']) ? $data['work_experience_ids'] : json_decode($data['work_experience_ids'], true),
@@ -76,7 +80,7 @@ class CareerService
             $query->orderBy('start_date', 'desc');
         }]);
 
-        $query->where('user_id', Auth::id());
+        $query->where('user_id', $this->userId);
 
         // Filter by person visibility
         // if (isset($filters['person'])) {
@@ -111,7 +115,7 @@ class CareerService
      */
     public function deleteCareer(int $careerId): bool
     {
-        $career = CareerDetail::where('user_id', Auth::id())
+        $career = CareerDetail::where('user_id', $this->userId)
             ->findOrFail($careerId);
 
         return $career->delete();
@@ -126,7 +130,7 @@ class CareerService
     {
         $career = CareerDetail::with(['workExperiences' => function ($query) {
             $query->orderBy('start_date', 'desc');
-        }])->where('user_id', auth()->id())
+        }])->where('user_id', $this->userId)
             ->findOrFail($careerId);
 
         return $career->workExperiences;
@@ -138,7 +142,7 @@ class CareerService
     public function isCareerOwner(int $careerId): bool
     {
         return CareerDetail::where('id', $careerId)
-            ->where('user_id', auth()->id())
+            ->where('user_id', $this->userId)
             ->exists();
     }
 }

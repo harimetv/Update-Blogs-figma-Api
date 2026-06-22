@@ -11,10 +11,16 @@ use Illuminate\Support\Facades\DB;
 
 class EducationDetailController extends Controller
 {
+    protected $user;
+    protected $userId;
+    public function __construct()
+    {
+        $this->user = request()->attributes->get('user');
+        $this->userId = $this->user->id;
+    }
     public function index(Request $request)
     {
-        $educationDetails = $request->user()
-            ->educationDetails() // assuming hasMany relation on User
+        $educationDetails = EducationDetail::where('user_id', $this->userId)
             ->with(['study', 'skills'])
             ->get();
 
@@ -23,7 +29,7 @@ class EducationDetailController extends Controller
 
     public function store(EducationDetailRequest $request)
     {
-        $user = $request->user();
+        $user = $this->user;
 
         $data = $request->validated();
         $data['user_id'] = $user->id;

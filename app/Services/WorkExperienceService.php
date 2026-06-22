@@ -10,10 +10,17 @@ use Illuminate\Support\Facades\Log;
 
 class WorkExperienceService
 {
+    protected $user;
+    protected $userId;
+    public function __construct()
+    {
+        $this->user = request()->attributes->get('user');
+        $this->userId = $this->user->id;
+    }
     public function getUserWorkExperiences(): array
     {
         try {
-            $user = Auth::user();
+            $user = $this->user;
             $experiences = WorkExperience::with('industry')->where('user_id', $user->id)
                 ->orderBy('is_current', 'desc')
                 ->orderBy('start_date', 'desc')
@@ -40,7 +47,7 @@ class WorkExperienceService
         try {
             DB::beginTransaction();
 
-            $user = Auth::user();
+            $user = $this->user;
 
             $data['is_current'] = $data['is_current'] ?? empty($data['end_date']);
             $data['user_id'] = $user->id;
@@ -75,7 +82,7 @@ class WorkExperienceService
         try {
             DB::beginTransaction();
 
-            $user = Auth::user();
+            $user = $this->user;
             $workExperience = WorkExperience::where('user_id', $user->id)
                 ->findOrFail($id);
 
@@ -120,7 +127,7 @@ class WorkExperienceService
         try {
             DB::beginTransaction();
 
-            $user = Auth::user();
+            $user = $this->user;
             $workExperience = WorkExperience::where('user_id', $user->id)
                 ->findOrFail($id);
 
@@ -155,7 +162,7 @@ class WorkExperienceService
     public function getWorkExperience(int $id): array
     {
         try {
-            $user = Auth::user();
+            $user = $this->user;
             $workExperience = WorkExperience::where('user_id', $user->id)
                 ->findOrFail($id);
 

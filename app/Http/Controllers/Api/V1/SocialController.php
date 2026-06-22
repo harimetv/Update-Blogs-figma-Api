@@ -1,16 +1,26 @@
 <?php
 
 namespace App\Http\Controllers\Api\V1;
-
+use App\Models\UserSocialLink;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Controller;
 
 class SocialController extends Controller
 {
+    protected $user;
+    protected $userId;
+    public function __construct()
+    {
+        $this->user = request()->attributes->get('user');
+        $this->userId = $this->user->id;
+    }
     public function getSocialLinks(Request $request)
     {
         try {
 
-            $user = Auth::user();
+            $user = $this->user;
             $socialLink = UserSocialLink::with('plateformType')->where('user_id', $user->id)->get();
 
             return response()->json([
@@ -43,7 +53,7 @@ class SocialController extends Controller
                 ], 422);
             }
 
-            $user = Auth::user();
+            $user = $this->user;
 
             if ($request->plateform_id) {
                 $socialLink = UserSocialLink::with('plateformType')->where('id', $request->plateform_id)
