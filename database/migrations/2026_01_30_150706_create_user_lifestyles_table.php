@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('user_lifestyles', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('user_id')->index();
+            $table->unsignedBigInteger('user_id')->nullable();
             $table->string('visibility');
             $table->json('languages')->nullable();
             $table->json('hobbies')->nullable();
@@ -32,10 +32,10 @@ return new class extends Migration
             $table->timestamps();
 
             // FK
-            $table->foreign('user_id')
-                ->references('id')
-                ->on('users')
-                ->cascadeOnDelete();
+            // $table->foreign('user_id')
+            //     ->references('id')
+            //     ->on('users')
+            //     ->cascadeOnDelete();
         });
     }
 

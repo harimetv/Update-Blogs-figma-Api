@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('artist_profiles', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('user_id')->index();
+            $table->unsignedBigInteger('user_id')->nullable();
             $table->string('visibility');
             $table->enum('gender', ['male', 'female', 'other'])->nullable();
             $table->string('bust_chest')->nullable();
@@ -38,7 +38,7 @@ return new class extends Migration
 
             $table->timestamps();
 
-            $table->foreign('user_id')->references('id')->on('users')->cascadeOnDelete();
+            // $table->foreign('user_id')->references('id')->on('users')->cascadeOnDelete();
         });
     }
 

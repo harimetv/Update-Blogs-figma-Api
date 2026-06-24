@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('educations', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id')->index();
+            $table->unsignedBigInteger('user_id')->nullable();
             $table->string('visibility');
             $table->string('school_name')->nullable();
             $table->string('college_name')->nullable();
@@ -27,10 +27,10 @@ return new class extends Migration
             $table->string('skills')->nullable();
             $table->string('city')->nullable();
             $table->timestamps();
-            $table->foreign('user_id')
-                ->references('id')
-                ->on('users')
-                ->cascadeOnDelete();
+            // $table->foreign('user_id')
+            //     ->references('id')
+            //     ->on('users')
+            //     ->cascadeOnDelete();
         });
     }
 
