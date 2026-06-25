@@ -16,9 +16,10 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id');
             $table->string('headline')->nullable();
             $table->text('career_description')->nullable();  
-            $table->json('work_experience_id')->nullable(); 
-            $table->string('media')->nullable(); 
-            $table->unsignedBigInteger('skills_id')->nullable(); 
+            $table->json('work_experience_id')->nullable();
+            $table->string('media')->nullable();
+            // $table->unsignedBigInteger('skills_id')->nullable(); 
+            $table->string('skills')->nullable(); 
             $table->string('rating')->nullable();
             $table->string('person')->nullable();
             $table->timestamps();
