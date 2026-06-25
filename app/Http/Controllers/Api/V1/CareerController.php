@@ -76,7 +76,7 @@ class CareerController extends Controller
             // }
 
             // $careers = $this->careerService->getCareers();
-            // $careers = CareerDetail::with(['user', 'workExperiences' => function ($query) {
+            // $careers = CareerDetail::with(['workExperiences' => function ($query) {
             //     $query->orderBy('start_date', 'desc');
             // }])->get();
             // $careers = CareerDetail::with('workExperience')->where('user_id', Auth::id())->get();
