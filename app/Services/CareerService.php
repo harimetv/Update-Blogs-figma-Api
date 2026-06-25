@@ -26,7 +26,7 @@ class CareerService
                     'headline' => $data['headline'] ?? $career->headline,
                     'career_description' => $data['career_description'] ?? $career->career_description,
                     'media' => $data['media'] ?? $career->media,
-                    'skills_id' => $data['skills_id'] ?? $career->skills_id,
+                    'skills' => $data['skills'] ?? $career->skills,
                     'work_experience_id' => isset($data['work_experience_ids']) ? $data['work_experience_ids'] : json_decode($data['work_experience_ids'], true),
                     'rating' => $data['rating'] ?? $career->rating,
                     'person' => $data['person'] ?? $career->person,
@@ -38,7 +38,7 @@ class CareerService
                     'career_description' => $data['career_description'] ?? null,
                     'work_experience_id' => isset($data['work_experience_ids']) ? $data['work_experience_ids'] : json_decode($data['work_experience_ids'], true),
                     'media' => $data['media'] ?? null,
-                    'skills_id' => $data['skills_id'] ?? null,
+                    'skills' => $data['skills'] ?? null,
                     'rating' => $data['rating'] ?? null,
                     'person' => $data['person'] ?? 'public',
                 ]);
