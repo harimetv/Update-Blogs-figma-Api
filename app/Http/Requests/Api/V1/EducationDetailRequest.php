@@ -19,14 +19,17 @@ class EducationDetailRequest extends FormRequest
             'study_id' => 'nullable|exists:studies,id',
             'start_date' => 'nullable|date',
             'end_date' => 'nullable|date|after_or_equal:start_date',
-            'media' => 'nullable|string|max:255', // maybe file path
-            'city_id' => 'nullable|string|max:255', // or integer if cities table
+            'media' => 'nullable|string|max:255',
+            'city_id' => 'nullable|string|max:255',
             'grade' => 'nullable|string|max:50',
             'description' => 'nullable|string',
             'status' => ['nullable', Rule::in(['public', 'private', 'onlyme'])],
+            // 'skills' => 'nullable|array',
+            // 'skills.*.id' => 'nullable|exists:skills,id',
+            // 'skills.*.skill_id' => 'required_with:skills|exists:skills,id',
+            // 'skills.*.percentage' => 'nullable|integer|min:0|max:100',
             'skills' => 'nullable|array',
-            'skills.*.id' => 'nullable|exists:skills,id', // to allow updating existing pivot? For sync we can just send skill_id and percentage
-            'skills.*.skill_id' => 'required_with:skills|exists:skills,id',
+            'skills.*.skill' => 'required_with:skills|string|max:255',
             'skills.*.percentage' => 'nullable|integer|min:0|max:100',
         ];
 

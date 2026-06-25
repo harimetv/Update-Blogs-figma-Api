@@ -52,7 +52,7 @@ class CareerDetail extends Model
             return collect();
         }
 
-        return WorkExperience::whereIn('id', $this->work_experience_id)->get();
+        return WorkExperience::with('industry')->whereIn('id', $this->work_experience_id)->get();
     }
 
     /**

@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 class EducationDetail extends Model
 {
     use HasFactory;
@@ -48,10 +49,8 @@ class EducationDetail extends Model
         );
     }
 
-    public function skills(): BelongsToMany
+    public function skills(): HasMany
     {
-        return $this->belongsToMany(Skill::class, 'education_skills')
-            ->withPivot('percentage')
-            ->withTimestamps();
+        return $this->hasMany(EducationDetailSkill::class,'education_detail_id');
     }
 }
