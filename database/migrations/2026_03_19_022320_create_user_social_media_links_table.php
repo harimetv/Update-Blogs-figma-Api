@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('user_social_links', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->unsignedBigInteger('user_id')->nullable();
             $table->string('plateform_type_id'); // instagram, facebook, twitter, linkedin, youtube, etc.
             $table->string('plateform_link'); // URL
             $table->timestamps();

@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('user_favorites', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('user_id')->index();
+            $table->unsignedBigInteger('user_id')->nullable();
             $table->string('visibility');
             $table->string('favorite_food')->nullable();
             $table->string('favorite_books')->nullable();
@@ -27,10 +27,10 @@ return new class extends Migration
             $table->timestamps();
 
             // FK
-            $table->foreign('user_id')
-                ->references('id')
-                ->on('users')
-                ->cascadeOnDelete();
+            // $table->foreign('user_id')
+            //     ->references('id')
+            //     ->on('users')
+            //     ->cascadeOnDelete();
         });
     }
 

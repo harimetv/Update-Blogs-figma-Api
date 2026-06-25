@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('favourites', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id')->index();
+            $table->unsignedBigInteger('user_id')->nullable();
             $table->enum('visibility', ['public', 'private', 'only_me'])->default('public');
             $table->string('favorite_food')->nullable();
             $table->string('favorite_books')->nullable();
@@ -24,7 +24,7 @@ return new class extends Migration
             $table->string('favorite_vacation_place')->nullable();
             $table->string('favorite_actress_actor')->nullable();
             $table->timestamps();
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            // $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

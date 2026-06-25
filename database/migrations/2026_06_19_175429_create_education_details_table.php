@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('education_details', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->unsignedBigInteger('user_id')->nullable();
             $table->string('school_name')->nullable();
             $table->string('college_name')->nullable();   // or degree type
             $table->foreignId('study_id')->nullable()->constrained()->onDelete('cascade');

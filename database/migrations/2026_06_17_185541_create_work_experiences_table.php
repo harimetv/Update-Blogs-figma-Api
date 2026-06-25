@@ -14,7 +14,7 @@ return new class extends Migration
     {
         Schema::create('work_experiences', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->unsignedBigInteger('user_id')->nullable();
             $table->string('organization_name');
             $table->string('job_title');
             $table->string('employment_type');
@@ -27,7 +27,7 @@ return new class extends Migration
             $table->timestamps();
             
             // Index for better performance
-            $table->index(['user_id', 'start_date']);
+            $table->index(['start_date']);
         });
     }
 

@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('friendships', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->foreignId('sender_id')->constrained('users')->onDelete('cascade');   // user who sends request
-            $table->foreignId('receiver_id')->constrained('users')->onDelete('cascade'); // user who receives request
+            $table->unsignedBigInteger('sender_id')->nullable();   // user who sends request
+            $table->unsignedBigInteger('receiver_id')->nullable(); // user who receives request
             $table->enum('status', all_status())->default(is_pending());
             $table->timestamps();
             $table->unique(['sender_id', 'receiver_id']); // prevent duplicate requests
