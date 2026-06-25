@@ -27,7 +27,7 @@ class CareerRequest extends FormRequest
             'work_experience_ids' => 'nullable|array',
             'work_experience_ids.*' => 'exists:work_experiences,id',
             'media' => 'nullable|string|max:255',
-            'skills_id' => 'nullable|exists:skills,id',
+            'skills' => 'nullable',
             'rating' => 'nullable|numeric|min:0|max:5',
             'person' => ['nullable', Rule::in(array_keys(getConstants()['person'] ?? []))],
         ];
@@ -43,7 +43,7 @@ class CareerRequest extends FormRequest
         return [
             'career_id.exists' => 'The specified career detail does not exist.',
             'work_experience_ids.*.exists' => 'One or more work experiences do not exist.',
-            'skills_id.exists' => 'The specified skill does not exist.',
+            // 'skills_id.exists' => 'The specified skill does not exist.',
             'person.in' => 'The person field must be one of: public, private, onlyme',
             'rating.numeric' => 'The rating must be a number.',
             'rating.min' => 'The rating must be at least 0.',

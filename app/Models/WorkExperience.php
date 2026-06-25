@@ -7,7 +7,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-
+use Illuminate\Database\Eloquent\Casts\Attribute;
 class WorkExperience extends Model
 {
     use HasFactory;
@@ -68,5 +68,29 @@ class WorkExperience extends Model
     public function scopePast($query)
     {
         return $query->where('is_current', false);
+    }
+
+    public function startDate() : Attribute{
+        return Attribute::make(
+            get: fn ($value) => appDateTimeFormat($value) ?? null,
+        );
+    }
+
+    public function endDate() : Attribute{
+        return Attribute::make(
+            get: fn ($value) => appDateTimeFormat($value) ?? null,
+        );
+    }
+
+    public function createdAt() : Attribute{
+        return Attribute::make(
+            get: fn ($value) => appDateFormat($value) ?? null,
+        );
+    }
+    
+    public function updatedAt() : Attribute{
+        return Attribute::make(
+            get: fn ($value) => appDateFormat($value) ?? null,
+        );
     }
 }

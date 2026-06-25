@@ -21,7 +21,7 @@ class CareerDetail extends Model
         'career_description',
         'work_experience_id',
         'media',
-        'skills_id',
+        'skills',
         'rating',
         'person',
     ];
@@ -58,10 +58,10 @@ class CareerDetail extends Model
     /**
      * Get the skill associated with the career.
      */
-    public function skill(): BelongsTo
-    {
-        return $this->belongsTo(Skill::class, 'skills_id');
-    }
+    // public function skill(): BelongsTo
+    // {
+    //     return $this->belongsTo(Skill::class, 'skills_id');
+    // }
 
     /**
      * Scope a query to only include public careers.

@@ -63,3 +63,25 @@ if (! function_exists('fullName')) {
         return strlen($name) > $limit ? substr($name, 0, $limit) . '...' : $name;
     }
 }
+
+if (! function_exists('appDateFormat')) {
+    function appDateFormat($date)
+    {
+        if (empty($date)) {
+            return null;
+        }
+
+        return \Carbon\Carbon::parse($date)->format(config('app.date_format', 'Y-m-d'));
+    }
+}
+
+if (! function_exists('appDateTimeFormat')) {
+    function appDateTimeFormat($date)
+    {
+        if (empty($date)) {
+            return null;
+        }
+
+        return \Carbon\Carbon::parse($date)->format(config('app.date_format', 'Y-m-d H:i'));
+    }
+}
