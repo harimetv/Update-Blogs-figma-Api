@@ -23,7 +23,14 @@ class EducationDetailResource extends JsonResource
             'grade' => $this->grade,
             'description' => $this->description,
             'status' => $this->status,
-            'skills' => SkillWithPivotResource::collection($this->whenLoaded('skills')),
+            'skills' => $this->whenLoaded('skills', function () {
+                return $this->skills->map(function ($skill) {
+                    return [
+                        'skill' => $skill->skill,
+                        'percentage' => $skill->percentage,
+                    ];
+                });
+            }),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];
