@@ -7,6 +7,7 @@ use App\Services\AccountService;
 use Exception;
 use Illuminate\Http\Request;
 
+use Illuminate\Support\Facades\Route;
 class AuthController extends Controller
 {
     protected AccountService $accountService;
@@ -39,6 +40,101 @@ class AuthController extends Controller
         try {
 
             $response = $this->accountService->register(
+                $request->all()
+            );
+
+            return response()->json($response);
+
+        } catch (Exception $e) {
+
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    public function verifyOtp(Request $request)
+    {
+        try {
+
+            $response = $this->accountService->verifyOTP(
+                $request->all()
+            );
+
+            return response()->json($response);
+
+        } catch (Exception $e) {
+
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    public function reSendOtp(Request $request)
+    {
+        try {
+
+            $response = $this->accountService->reSendOtp(
+                $request->all()
+            );
+
+            return response()->json($response);
+
+        } catch (Exception $e) {
+
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    public function checkUsername(Request $request)
+    {
+        try {
+
+            $response = $this->accountService->checkUsername(
+                $request->all()
+            );
+
+            return response()->json($response);
+
+        } catch (Exception $e) {
+
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    public function checkEmail(Request $request)
+    {
+        try {
+
+            $response = $this->accountService->checkEmail(
+                $request->all()
+            );
+
+            return response()->json($response);
+
+        } catch (Exception $e) {
+
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    public function checkReferral(Request $request)
+    {
+        try {
+
+            $response = $this->accountService->checkReferral(
                 $request->all()
             );
 

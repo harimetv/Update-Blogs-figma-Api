@@ -28,7 +28,72 @@ class AccountService
     {
         try {
 
-            $response = Http::withHeaders(['Content-Type' => 'application/json'])->post("{$this->baseUrl}/api/v1/auth/register", $data);
+            $response = Http::withHeaders(['Content-Type' => 'application/json'])->post("{$this->baseUrl}/api/v1/auth/signup", $data);
+
+            return $response->json();
+
+        } catch (Exception $e) {
+
+            throw new Exception($e->getMessage());
+        }
+    }
+
+    public function verifyOTP(array $data): array
+    {
+        try {
+            $response = Http::withHeaders(['Content-Type' => 'application/json'])->post("{$this->baseUrl}/api/v1/auth/verify-otp", $data);
+
+            return $response->json();
+
+        } catch (Exception $e) {
+
+            throw new Exception($e->getMessage());
+        }
+    }
+
+    public function reSendOtp(array $data): array
+    {
+        try {
+            $response = Http::withHeaders(['Content-Type' => 'application/json'])->post("{$this->baseUrl}/api/v1/auth/re-send-otp", $data);
+
+            return $response->json();
+
+        } catch (Exception $e) {
+
+            throw new Exception($e->getMessage());
+        }
+    }
+
+    public function checkUsername(array $data): array
+    {
+        try {
+            $response = Http::withHeaders(['Content-Type' => 'application/json'])->post("{$this->baseUrl}/api/v1/auth/check-username", $data);
+
+            return $response->json();
+
+        } catch (Exception $e) {
+
+            throw new Exception($e->getMessage());
+        }
+    }
+
+    public function checkEmail(array $data): array
+    {
+        try {
+            $response = Http::withHeaders(['Content-Type' => 'application/json'])->post("{$this->baseUrl}/api/v1/auth/check-email", $data);
+
+            return $response->json();
+
+        } catch (Exception $e) {
+
+            throw new Exception($e->getMessage());
+        }
+    }
+
+    public function checkReferral(array $data): array
+    {
+        try {
+            $response = Http::withHeaders(['Content-Type' => 'application/json'])->post("{$this->baseUrl}/api/v1/auth/check-referral", $data);
 
             return $response->json();
 
