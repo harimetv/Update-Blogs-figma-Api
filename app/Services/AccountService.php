@@ -13,16 +13,13 @@ class AccountService
         $this->baseUrl = config('services.accounts.url');
     }
 
-    public function login(array $data): array
+    public function login(array $data)
     {
         try {
-            // dd($data);
-            $data['identifier'] = $data['username'];
-            $response = Http::post("{$this->baseUrl}/auth/login", $data);
+            $response = Http::withHeaders(['Content-Type' => 'application/json'])->post("{$this->baseUrl}/api/v1/auth/login", $data);
+
             return $response->json();
-
         } catch (Exception $e) {
-
             throw new Exception($e->getMessage());
         }
     }
@@ -31,7 +28,7 @@ class AccountService
     {
         try {
 
-            $response = Http::post("{$this->baseUrl}/auth/register", $data);
+            $response = Http::withHeaders(['Content-Type' => 'application/json'])->post("{$this->baseUrl}/api/v1/auth/register", $data);
 
             return $response->json();
 

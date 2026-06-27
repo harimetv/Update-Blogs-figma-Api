@@ -17,8 +17,8 @@ class AuthController extends Controller
 
     public function login(LoginRequest $request)
     {
-        $credentials = $request->getCredentials();
-        // dd("hello", $credentials);
+        // $credentials = $request->getCredentials();
+        $credentials = $request->validated();
         try {
 
             $response = $this->accountService->login($credentials);
