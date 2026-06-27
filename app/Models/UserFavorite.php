@@ -3,11 +3,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+use App\Models\User;
 class UserFavorite extends Model
 {
     protected $fillable = [
         'user_id',
-        'visibility',
+        'person',
         'favorite_food',
         'favorite_books',
         'favorite_music',

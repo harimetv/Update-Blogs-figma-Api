@@ -31,6 +31,7 @@ class EducationDetailResource extends JsonResource
                     ];
                 });
             }),
+            'city' => new CityResource($this->whenLoaded('city')),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

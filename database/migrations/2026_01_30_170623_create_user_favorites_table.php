@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('user_favorites', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('user_id')->nullable();
-            $table->string('visibility');
+            $table->string('person');
             $table->string('favorite_food')->nullable();
             $table->string('favorite_books')->nullable();
             $table->string('favorite_music')->nullable();

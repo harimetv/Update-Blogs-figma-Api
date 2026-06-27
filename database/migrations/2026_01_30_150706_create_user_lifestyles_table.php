@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('user_lifestyles', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('user_id')->nullable();
-            $table->string('visibility');
+            $table->string('person')->nullable();
             $table->json('languages')->nullable();
             $table->json('hobbies')->nullable();
             // habits
@@ -27,7 +27,8 @@ return new class extends Migration
             $table->boolean('own_car')->default(false);
 
             // cooking / food
-            $table->json('food_cook')->nullable();
+            // $table->json('food_cook')->nullable();
+            $table->string('food_cook')->nullable();
 
             $table->timestamps();
 

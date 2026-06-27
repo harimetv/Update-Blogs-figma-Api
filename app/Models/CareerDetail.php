@@ -6,6 +6,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Models\WorkExperience;
+use App\Models\User;
+use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Support\Facades\Storage;
 class CareerDetail extends Model
 {
     use HasFactory;
@@ -18,24 +21,11 @@ class CareerDetail extends Model
     protected $fillable = [
         'user_id',
         'headline',
-        'career_description',
-        'work_experience_id',
+        'career_objective',
         'media',
-        'skills',
-        'rating',
+        'skill_name',
+        'skill_percentage',
         'person',
-    ];
-
-    protected $appends = ['work_experiences'];
-
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
-     */
-    protected $casts = [
-        'work_experience_id' => 'array',
-        'rating' => 'decimal:2',
     ];
 
     /**
@@ -45,23 +35,6 @@ class CareerDetail extends Model
     {
         return $this->belongsTo(User::class);
     }
-
-    public function getWorkExperiencesAttribute()
-    {
-        if (empty($this->work_experience_id)) {
-            return collect();
-        }
-
-        return WorkExperience::with('industry')->whereIn('id', $this->work_experience_id)->get();
-    }
-
-    /**
-     * Get the skill associated with the career.
-     */
-    // public function skill(): BelongsTo
-    // {
-    //     return $this->belongsTo(Skill::class, 'skills_id');
-    // }
 
     /**
      * Scope a query to only include public careers.
@@ -85,5 +58,12 @@ class CareerDetail extends Model
     public function scopeOnlyMe($query)
     {
         return $query->where('person', 'onlyme');
+    }
+
+    public function media(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value) => $value ? asset(Storage::url($value)) : null,
+        );
     }
 }

@@ -16,7 +16,7 @@ class StoreArtistProfileRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'visibility'       => 'required|in:public,connections,custom_friends,only_me',
+            'person'       => 'required|in:public,private,onlyme',
 
             'gender'           => 'nullable|in:male,female,other',
             'bust_chest'       => 'nullable|string|max:50',

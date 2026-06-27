@@ -22,15 +22,15 @@ class StoreUserLifestyleRequest extends FormRequest
     {
         return [
             // visibility
-            'visibility'  => 'required|in:public,connections,custom_friends,only_me',
+            'person'  => 'required|in:public,private,onlyme',
 
             // languages (array of IDs)
             'languages'   => 'nullable|array',
-            'languages.*' => 'required|integer|exists:languages,id',
+            'languages' => 'required|exists:languages,id',
 
             // hobbies (array of IDs)
             'hobbies'     => 'nullable|array',
-            'hobbies.*'   => 'required|integer|exists:hobbies,id',
+            'hobbies.*'   => 'nullable|integer|exists:hobbies,id',
 
             // habits
             'diet'        => 'nullable|in:vegetarian,non_vegetarian,eggetarian',
@@ -38,12 +38,12 @@ class StoreUserLifestyleRequest extends FormRequest
             'smoking'     => 'nullable|in:yes,no,occasionally',
 
             // assets
-            'own_house'   => 'required|boolean',
-            'own_car'     => 'required|boolean',
+            'own_house'   => 'nullable|boolean',
+            'own_car'     => 'nullable|boolean',
 
             // food / cooking
-            'food_cook'   => 'nullable|array',
-            'food_cook.*' => 'nullable|string|max:255',
+            'food_cook'   => 'nullable|string',
+            // 'food_cook.*' => 'nullable|string|max:255',
         ];
     }
 

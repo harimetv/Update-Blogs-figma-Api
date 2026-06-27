@@ -17,56 +17,92 @@ class CareerService
         $this->user = request()->attributes->get('user');
         $this->userId = $this->user->id;
     }
+    // public function saveCareer(array $data, ?int $careerId = null): CareerDetail
+    // {
+    //     return DB::transaction(function () use ($data, $careerId) {
+    //         if ($careerId) {
+    //             $career = CareerDetail::findOrFail($careerId);
+    //             $career->update([
+    //                 'headline' => $data['headline'] ?? $career->headline,
+    //                 'career_description' => $data['career_description'] ?? $career->career_description,
+    //                 'media' => $data['media'] ?? $career->media,
+    //                 'skills' => $data['skills'] ?? $career->skills,
+    //                 // 'work_experience_id' => isset($data['work_experience_ids']) ? $data['work_experience_ids'] : json_decode($data['work_experience_ids'], true),
+    //                 'rating' => $data['rating'] ?? $career->rating,
+    //                 'person' => $data['person'] ?? $career->person,
+    //             ]);
+    //         } else {
+    //             $career = CareerDetail::create([
+    //                 'user_id' => $this->userId,
+    //                 'headline' => $data['headline'] ?? null,
+    //                 'career_description' => $data['career_description'] ?? null,
+    //                 // 'work_experience_id' => isset($data['work_experience_ids']) ? $data['work_experience_ids'] : json_decode($data['work_experience_ids'], true),
+    //                 'media' => $data['media'] ?? null,
+    //                 'skills' => $data['skills'] ?? null,
+    //                 'rating' => $data['rating'] ?? null,
+    //                 'person' => $data['person'] ?? 'public',
+    //             ]);
+    //         }
+
+    //         // Sync work experiences if provided
+    //         // if (isset($data['work_experience_ids']) && is_array($data['work_experience_ids'])) {
+    //         //     // Validate that all work experiences belong to the same user
+    //         //     $workExperienceIds = $data['work_experience_ids'];
+    //         //     $validExperiences = WorkExperience::where('user_id', auth()->id())
+    //         //         ->whereIn('id', $workExperienceIds)
+    //         //         ->pluck('id')
+    //         //         ->toArray();
+
+    //         //     // Update the career_detail's work_experience_id field
+    //         //     $career->update([
+    //         //         'work_experience_id' => json_encode($validExperiences)
+    //         //     ]);
+    //         // } else {
+    //         //     // If no work experiences provided, set to empty array
+    //         //     $career->update([
+    //         //         'work_experience_id' => json_encode([])
+    //         //     ]);
+    //         // }
+
+    //         return $career->fresh();
+    //     });
+    // }
     public function saveCareer(array $data, ?int $careerId = null): CareerDetail
     {
         return DB::transaction(function () use ($data, $careerId) {
+            // Handle media file upload
+            $mediaPath = null;
+            if (request()->hasFile('media')) {
+                $file = request()->file('media');
+                $mediaPath = $file->store('media', 'public'); // stores in storage/app/public/media
+            }
+
             if ($careerId) {
                 $career = CareerDetail::findOrFail($careerId);
                 $career->update([
-                    'headline' => $data['headline'] ?? $career->headline,
-                    'career_description' => $data['career_description'] ?? $career->career_description,
-                    'media' => $data['media'] ?? $career->media,
-                    'skills' => $data['skills'] ?? $career->skills,
-                    'work_experience_id' => isset($data['work_experience_ids']) ? $data['work_experience_ids'] : json_decode($data['work_experience_ids'], true),
-                    'rating' => $data['rating'] ?? $career->rating,
-                    'person' => $data['person'] ?? $career->person,
+                    'headline'           => $data['headline'] ?? $career->headline,
+                    'career_objective'   => $data['career_objective'] ?? $career->career_objective,
+                    'media'              => $mediaPath ?? $career->media,
+                    'skill_name'         => $data['skill_name'] ?? $career->skill_name,
+                    'skill_percentage'   => $data['skill_percentage'] ?? $career->skill_percentage,
+                    'person'             => $data['person'] ?? $career->person,
                 ]);
             } else {
                 $career = CareerDetail::create([
-                    'user_id' => $this->userId,
-                    'headline' => $data['headline'] ?? null,
-                    'career_description' => $data['career_description'] ?? null,
-                    'work_experience_id' => isset($data['work_experience_ids']) ? $data['work_experience_ids'] : json_decode($data['work_experience_ids'], true),
-                    'media' => $data['media'] ?? null,
-                    'skills' => $data['skills'] ?? null,
-                    'rating' => $data['rating'] ?? null,
-                    'person' => $data['person'] ?? 'public',
+                    'user_id'            => $this->userId,
+                    'headline'           => $data['headline'],
+                    'career_objective'   => $data['career_objective'],
+                    'media'              => $mediaPath,
+                    'skill_name'         => $data['skill_name'] ?? null,
+                    'skill_percentage'   => $data['skill_percentage'] ?? null,
+                    'person'             => $data['person'] ?? 'public',
                 ]);
             }
-
-            // Sync work experiences if provided
-            // if (isset($data['work_experience_ids']) && is_array($data['work_experience_ids'])) {
-            //     // Validate that all work experiences belong to the same user
-            //     $workExperienceIds = $data['work_experience_ids'];
-            //     $validExperiences = WorkExperience::where('user_id', auth()->id())
-            //         ->whereIn('id', $workExperienceIds)
-            //         ->pluck('id')
-            //         ->toArray();
-
-            //     // Update the career_detail's work_experience_id field
-            //     $career->update([
-            //         'work_experience_id' => json_encode($validExperiences)
-            //     ]);
-            // } else {
-            //     // If no work experiences provided, set to empty array
-            //     $career->update([
-            //         'work_experience_id' => json_encode([])
-            //     ]);
-            // }
 
             return $career->fresh();
         });
     }
+
 
     /**
      * Get all career details for the authenticated user
