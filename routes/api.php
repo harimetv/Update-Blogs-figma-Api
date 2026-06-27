@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\V1\CommonController;
 use App\Http\Controllers\Api\V1\UserProfileController;
 use App\Http\Controllers\Api\V1\EducationDetailController;
+use App\Http\Controllers\Api\V1\HomeController;
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
@@ -22,7 +23,14 @@ Route::prefix('v1/auth')->group(function () {
     Route::middleware('verify.jwt')->group(function () {
 
         Route::get('profile', [ProfileController::class, 'profile']);
-        // Route::get('me', [AuthController::class, 'me']);
+        Route::get('home-video', [HomeController::class, 'video']);
+
+        Route::prefix('user')->group(function () {
+            Route::get('hobbies', [UserProfileController::class, 'getAllHobbies']);
+            Route::get('languages', [UserProfileController::class, 'getAllLanguages']);
+            Route::get('interests', [UserProfileController::class, 'getAllInterests']);
+            Route::get('comfortables', [UserProfileController::class, 'getAllComfortables']);
+        });
 
         Route::prefix('common')->group(function () {
             Route::get('/get-industries', [CommonController::class, 'industries']);

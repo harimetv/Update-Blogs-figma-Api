@@ -10,7 +10,7 @@ use App\Http\Requests\User\StoreUserLifestyleRequest;
 use App\Models\ArtistProfile;
 use App\Models\Comfortable;
 use App\Models\Hobby;
-use App\Models\InterestIn;
+use App\Models\Interest;
 use App\Models\Language;
 use App\Models\UserFavorite;
 use App\Models\UserLifestyle;
@@ -31,22 +31,92 @@ class UserProfileController extends Controller
         $this->userId = $this->user->id;
     }
 
+    // public function getProfile(Request $request)
+    // {
+    //     try {
+    //         // $profile = $this->userService->find(['id' => $this->user->id]);
+
+    //         return $this->successResponse(
+    //             'Profile fetched successfully11',
+    //             $profile,
+    //             ResponseCode::OK,
+    //         );
+
+    //     } catch (Exception $e) {
+    //         $errorId = log_exception($e, 'Profile Fetch Error');
+
+    //         return $this->errorResponse(
+    //             "Unable to update profile. Please contact support with Error ID: {$errorId}.",
+    //             'EXCEPTION',
+    //             ResponseCode::INTERNAL_ERROR,
+    //             new \stdClass
+    //         );
+    //     }
+    // }
+
+    // public function updateProfile(ProfileUpdateRequest $request)
+    // {
+    //     $validated = $request->validated();
+    //     try {
+    //         $profile = $this->profileService->profileUpdate($validated, $this->userId);
+
+    //         return $this->successResponse(
+    //             'Profile updated successfully',
+    //             $profile,
+    //             ResponseCode::OK,
+    //         );
+
+    //     } catch (Exception $e) {
+    //         $errorId = log_exception($e, 'Profile Update Error');
+
+    //         return $this->errorResponse(
+    //             "Unable to update profile. Please contact support with Error ID: {$errorId}.",
+    //             'EXCEPTION',
+    //             ResponseCode::INTERNAL_ERROR,
+    //             new \stdClass
+    //         );
+    //     }
+    // }
+
+    // public function getUserProfile(Request $request, $username)
+    // {
+    //     try {
+    //         // sleep(4);
+    //         $profile = $this->userService->find(['username' => $username]);
+
+    //         return $this->successResponse(
+    //             'Profile fetched successfully',
+    //             $profile,
+    //             ResponseCode::OK,
+    //         );
+
+    //     } catch (Exception $e) {
+    //         $errorId = log_exception($e, 'Profile Fetch Error');
+
+    //         return $this->errorResponse(
+    //             "Unable to update profile. Please contact support with Error ID: {$errorId}.",
+    //             'EXCEPTION',
+    //             ResponseCode::INTERNAL_ERROR,
+    //             new \stdClass
+    //         );
+    //     }
+    // }
+
     public function getProfile(Request $request)
     {
         try {
-            // $profile = $this->userService->find(['id' => $this->user->id]);
+            // Fetch the authenticated user's profile
+            $profile = $this->profileService->find(['user_id' => $this->userId]);
 
             return $this->successResponse(
-                'Profile fetched successfully11',
+                'Profile fetched successfully',
                 $profile,
-                ResponseCode::OK,
+                ResponseCode::OK
             );
-
         } catch (Exception $e) {
             $errorId = log_exception($e, 'Profile Fetch Error');
-
             return $this->errorResponse(
-                "Unable to update profile. Please contact support with Error ID: {$errorId}.",
+                "Unable to fetch profile. Please contact support with Error ID: {$errorId}.",
                 'EXCEPTION',
                 ResponseCode::INTERNAL_ERROR,
                 new \stdClass
@@ -63,12 +133,10 @@ class UserProfileController extends Controller
             return $this->successResponse(
                 'Profile updated successfully',
                 $profile,
-                ResponseCode::OK,
+                ResponseCode::OK
             );
-
         } catch (Exception $e) {
             $errorId = log_exception($e, 'Profile Update Error');
-
             return $this->errorResponse(
                 "Unable to update profile. Please contact support with Error ID: {$errorId}.",
                 'EXCEPTION',
@@ -81,26 +149,25 @@ class UserProfileController extends Controller
     public function getUserProfile(Request $request, $username)
     {
         try {
-            // sleep(4);
-            $profile = $this->userService->find(['username' => $username]);
+            // Fetch profile by username (column in profiles table)
+            $profile = $this->profileService->find(['username' => $username]);
 
             return $this->successResponse(
                 'Profile fetched successfully',
                 $profile,
-                ResponseCode::OK,
+                ResponseCode::OK
             );
-
         } catch (Exception $e) {
             $errorId = log_exception($e, 'Profile Fetch Error');
-
             return $this->errorResponse(
-                "Unable to update profile. Please contact support with Error ID: {$errorId}.",
+                "Unable to fetch profile. Please contact support with Error ID: {$errorId}.",
                 'EXCEPTION',
                 ResponseCode::INTERNAL_ERROR,
                 new \stdClass
             );
         }
     }
+
 
     public function getAllHobbies(Request $request)
     {
@@ -159,16 +226,16 @@ class UserProfileController extends Controller
             );
 
             return $this->successResponse(
-                'Profile updated successfully',
+                'lifestyle updated successfully',
                 $lifestyle,
                 ResponseCode::OK,
             );
 
         } catch (Exception $e) {
-            $errorId = log_exception($e, 'Profile Update Error');
+            $errorId = log_exception($e, 'lifestyle Update Error');
 
             return $this->errorResponse(
-                "Unable to update profile. Please contact support with Error ID: {$errorId}.",
+                "Unable to update lifestyle. Please contact support with Error ID: {$errorId}.",
                 'EXCEPTION',
                 ResponseCode::INTERNAL_ERROR,
                 new \stdClass
@@ -235,7 +302,7 @@ class UserProfileController extends Controller
     public function getAllInterests()
     {
         try {
-            $interests = InterestIn::where('status', true)->get();
+            $interests = Interest::where('status', true)->get();
 
             return $this->successResponse('Interests retrieved successfully', $interests, ResponseCode::OK);
         } catch (Exception $e) {

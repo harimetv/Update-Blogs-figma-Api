@@ -19,8 +19,8 @@ class EducationDetailRequest extends FormRequest
             'study_id' => 'nullable|exists:studies,id',
             'start_date' => 'nullable|date',
             'end_date' => 'nullable|date|after_or_equal:start_date',
-            'media' => 'nullable|string|max:255',
-            'city_id' => 'nullable|string|max:255',
+            'media' => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png',
+            'city_id' => 'nullable|exists:cities,id',
             'grade' => 'nullable|string|max:50',
             'description' => 'nullable|string',
             'status' => ['nullable', Rule::in(['public', 'private', 'onlyme'])],
@@ -40,6 +40,9 @@ class EducationDetailRequest extends FormRequest
     {
         return [
             'end_date.after_or_equal' => 'End date must be after or equal to start date.',
+            'media.file'              => 'The media must be a file.',
+            'media.mimes'             => 'Allowed file types: pdf, doc, docx, jpg, jpeg, png.',
+            'skills.json'             => 'The skills field must be a valid JSON string.',
         ];
     }
 }

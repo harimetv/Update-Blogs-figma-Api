@@ -14,18 +14,22 @@ return new class extends Migration
         Schema::create('profiles', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('user_id')->index();
-            $table->unsignedBigInteger('category_id')->index()->nullable();
+            // $table->unsignedBigInteger('category_id')->index()->nullable();
+            $table->string('person')->nullable();
             $table->string('first_name');
             $table->string('last_name')->nullable();
+            $table->string('username')->nullable();
+            $table->string('email')->nullable();
+            $table->string('phone')->nullable();
             $table->string('gender')->nullable();
             $table->date('dob')->nullable();
             $table->text('headline')->nullable();
-            $table->text('about')->nullable();
+            $table->text('bio')->nullable();
             $table->string('image')->nullable();
             $table->string('banner')->nullable();
             $table->timestamps();
             // $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
+            // $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
         });
     }
 

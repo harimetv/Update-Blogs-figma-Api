@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('artist_profiles', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('user_id')->nullable();
-            $table->string('visibility');
+            $table->string('person')->nullable();
             $table->enum('gender', ['male', 'female', 'other'])->nullable();
             $table->string('bust_chest')->nullable();
             $table->string('hip')->nullable();

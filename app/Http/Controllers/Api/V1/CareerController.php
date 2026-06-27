@@ -33,7 +33,7 @@ class CareerController extends Controller
      */
     public function storeOrUpdate(CareerRequest $request)
     {
-        try {
+        // try {
             $careerId = $request->career_id;
             if ($careerId && ! $this->careerService->isCareerOwner($careerId)) {
                 return $this->errorResponse(
@@ -51,13 +51,13 @@ class CareerController extends Controller
                 $message,$career
                 // new CareerResource($career->load(['workExperiences']))
             );
-        } catch (\Exception $e) {
-            Log::error('Career store/update error: '.$e->getMessage(), [
-                'trace' => $e->getTraceAsString(),
-            ]);
+        // } catch (\Exception $e) {
+        //     Log::error('Career store/update error: '.$e->getMessage(), [
+        //         'trace' => $e->getTraceAsString(),
+        //     ]);
 
-            return $this->handleException($e, 'Failed to save career details');
-        }
+        //     return $this->handleException($e, 'Failed to save career details');
+        // }
     }
 
     /**

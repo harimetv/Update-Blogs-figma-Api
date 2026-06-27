@@ -16,7 +16,7 @@ class StoreUserFavoriteRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'visibility'              => 'required|in:public,connections,custom_friends,only_me',
+            'person'              => 'required|in:public,private,onlyme',
             'favorite_food'           => 'nullable|string|max:255',
             'favorite_books'          => 'nullable|string|max:255',
             'favorite_music'          => 'nullable|string|max:255',

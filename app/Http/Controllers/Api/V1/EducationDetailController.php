@@ -20,39 +20,10 @@ class EducationDetailController extends Controller
     }
     public function index(Request $request)
     {
-        $educationDetails = EducationDetail::where('user_id', $this->userId)->with(['study', 'skills'])->get();
+        $educationDetails = EducationDetail::where('user_id', $this->userId)->with(['study', 'skills','city'])->get();
 
         return $this->successResponse('Education details retrieved successfully.', EducationDetailResource::collection($educationDetails));
     }
-
-    // public function store(EducationDetailRequest $request)
-    // {
-    //     $user = $this->user;
-
-    //     $data = $request->validated();
-    //     $data['user_id'] = $user->id;
-
-    //     $skillsData = $data['skills'] ?? [];
-    //     unset($data['skills']);
-
-    //     $educationDetail = DB::transaction(function () use ($data, $skillsData) {
-    //         $educationDetail = EducationDetail::create($data);
-
-    //         if (! empty($skillsData)) {
-    //             $syncData = [];
-    //             foreach ($skillsData as $skill) {
-    //                 $syncData[$skill['skill_id']] = ['percentage' => $skill['percentage'] ?? null];
-    //             }
-    //             $educationDetail->skills()->sync($syncData);
-    //         }
-
-    //         return $educationDetail;
-    //     });
-
-    //     $educationDetail->load(['study', 'skills']);
-
-    //     return $this->successResponse('Education detail created successfully.', new EducationDetailResource($educationDetail));
-    // }
 
     public function store(EducationDetailRequest $request)
     {
@@ -60,13 +31,18 @@ class EducationDetailController extends Controller
         $data = $request->validated();
         $data['user_id'] = $user->id;
 
+        if ($request->hasFile('media')) {
+            $file = $request->file('media');
+            $path = $file->store('uploads/education', 'public'); // stores in storage/app/public/uploads/education
+            $data['media'] = $path; // save relative path in DB
+        }
+
+
         $skillsData = $data['skills'] ?? [];
         unset($data['skills']);
 
         $educationDetail = DB::transaction(function () use ($data, $skillsData) {
             $educationDetail = EducationDetail::create($data);
-
-            // Save skills
             foreach ($skillsData as $skillItem) {
                 EducationDetailSkill::create([
                     'education_detail_id' => $educationDetail->id,
@@ -78,7 +54,7 @@ class EducationDetailController extends Controller
             return $educationDetail;
         });
 
-        $educationDetail->load('skills');
+        $educationDetail->load('study','skills','city');
 
         return $this->successResponse('Education detail created successfully.', new EducationDetailResource($educationDetail));
     }
@@ -86,6 +62,17 @@ class EducationDetailController extends Controller
     public function update(EducationDetailRequest $request, EducationDetail $educationDetail)
     {
         $data = $request->validated();
+
+        if ($request->hasFile('media')) {
+            // Delete old file if exists
+            if ($educationDetail->media && Storage::disk('public')->exists($educationDetail->media)) {
+                Storage::disk('public')->delete($educationDetail->media);
+            }
+
+            $file = $request->file('media');
+            $path = $file->store('uploads/education', 'public');
+            $data['media'] = $path;
+        }
         $skillsData = $data['skills'] ?? [];
         unset($data['skills']);
 
@@ -101,42 +88,17 @@ class EducationDetailController extends Controller
             }
         });
 
-        $educationDetail->load('skills');
+        $educationDetail->load('study','skills','city');
 
         return $this->successResponse('Education detail updated successfully.', new EducationDetailResource($educationDetail));
     }
 
     public function show(EducationDetail $educationDetail)
     {
-        $educationDetail->load(['study', 'skills']);
+        $educationDetail->load(['study', 'skills','city']);
 
         return $this->successResponse('Education detail retrieved successfully.', new EducationDetailResource($educationDetail));
     }
-
-    // public function update(EducationDetailRequest $request, EducationDetail $educationDetail)
-    // {
-    //     $data = $request->validated();
-    //     $skillsData = $data['skills'] ?? [];
-    //     unset($data['skills']);
-
-    //     DB::transaction(function () use ($educationDetail, $data, $skillsData) {
-    //         $educationDetail->update($data);
-
-    //         if (! empty($skillsData)) {
-    //             $syncData = [];
-    //             foreach ($skillsData as $skill) {
-    //                 $syncData[$skill['skill_id']] = ['percentage' => $skill['percentage'] ?? null];
-    //             }
-    //             $educationDetail->skills()->sync($syncData);
-    //         } else {
-    //             $educationDetail->skills()->sync([]);
-    //         }
-    //     });
-
-    //     $educationDetail->load(['study', 'skills']);
-
-    //     return $this->successResponse('Education detail updated successfully.', new EducationDetailResource($educationDetail));
-    // }
 
     public function destroy(EducationDetail $educationDetail)
     {
