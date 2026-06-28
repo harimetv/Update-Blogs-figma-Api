@@ -19,6 +19,12 @@ Route::prefix('v1/auth')->group(function () {
 
     Route::post('login', [AuthController::class, 'login']);
     Route::post('register', [AuthController::class, 'register']);
+    Route::post('verify-otp', [AuthController::class, 'verifyOtp']);
+    Route::post('re-send-otp', [AuthController::class, 'reSendOtp']);
+    
+    Route::post('check-username', [AuthController::class, 'checkUsername']);
+    Route::post('check-email', [AuthController::class, 'checkEmail']);
+    Route::post('check-referral', [AuthController::class, 'checkReferral']);
 
     Route::middleware('verify.jwt')->group(function () {
 
