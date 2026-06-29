@@ -12,6 +12,7 @@ use App\Http\Controllers\Api\V1\UserProfileController;
 use App\Http\Controllers\Api\V1\EducationDetailController;
 use App\Http\Controllers\Api\V1\HomeController;
 use App\Http\Controllers\FamilyMemberController;
+use App\Http\Controllers\FamilyProfileController;
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
@@ -78,6 +79,12 @@ Route::prefix('v1/auth')->group(function () {
 
         Route::apiResource('education-details', EducationDetailController::class);
         Route::apiResource('family-members', FamilyMemberController::class);
+
+        Route::prefix('family-profile')->group(function () {
+            Route::get('/', [FamilyProfileController::class, 'show']);                // Get profile
+            Route::post('/', [FamilyProfileController::class, 'storeOrUpdate']);     // Create/Update profile
+            Route::delete('/', [FamilyProfileController::class, 'destroy']);   
+        });
 
     });
 
