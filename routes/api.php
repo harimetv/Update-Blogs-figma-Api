@@ -11,6 +11,7 @@ use App\Http\Controllers\Api\V1\CommonController;
 use App\Http\Controllers\Api\V1\UserProfileController;
 use App\Http\Controllers\Api\V1\EducationDetailController;
 use App\Http\Controllers\Api\V1\HomeController;
+use App\Http\Controllers\FamilyMemberController;
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
@@ -76,6 +77,7 @@ Route::prefix('v1/auth')->group(function () {
         });
 
         Route::apiResource('education-details', EducationDetailController::class);
+        Route::apiResource('family-members', FamilyMemberController::class);
 
     });
 
