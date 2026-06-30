@@ -90,6 +90,10 @@ Route::prefix('v1/auth')->group(function () {
 
         Route::post('contact-info', [ContactController::class,'store']);
 
+        Route::get('/get-marriage-profile', [MarriageProfileController::class, 'show']);
+        Route::post('/update-marriage-profile', [MarriageProfileController::class, 'store']);
+        Route::put('/marriage-profile', [MarriageProfileController::class, 'update']);
+
     });
 
 });
