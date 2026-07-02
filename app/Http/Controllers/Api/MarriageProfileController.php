@@ -10,15 +10,18 @@ use Illuminate\Support\Facades\Validator;
 
 class MarriageProfileController extends Controller
 {
-    use ApiResponse;
+    protected $user;
+    protected $userId;
+    public function __construct()
+    {
+        $this->user = request()->attributes->get('user');
+        $this->userId = $this->user->id;
+    }
 
-    /**
-     * Get the authenticated user's marriage profile.
-     */
     public function show(Request $request)
     {
         try {
-            $profile = $request->user()->marriageProfile;
+            $profile = MarriageProfile::where('user_id', $this->userId)->first();
 
             if (!$profile) {
                 return $this->errorResponse(
@@ -34,18 +37,15 @@ class MarriageProfileController extends Controller
         }
     }
 
-    /**
-     * Store a new marriage profile for the authenticated user.
-     */
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'religion_id'      => 'required|integer|exists:religions,id', // adjust if table not exists
+            'religion_id'      => 'required|integer|exists:religions,id',
             'cast_id'          => 'nullable|integer|exists:casts,id',
             'country_id'       => 'nullable|integer|exists:countries,id',
             'city_id'          => 'nullable|integer|exists:cities,id',
             'gotra_id'         => 'nullable|integer|exists:gotras,id',
-            'person'           => 'required|in:public,private,only_me',
+            'person'           => 'required|in:public,private,onlyme',
             'bio'              => 'nullable|string',
             'age'              => 'nullable|string|max:50',
             'manage_by'        => 'nullable|string|max:255',
@@ -64,80 +64,23 @@ class MarriageProfileController extends Controller
         }
 
         try {
-            $user = $request->user();
-
-            // Check if profile already exists
-            if ($user->marriageProfile) {
-                return $this->errorResponse(
-                    'Profile already exists. Use update method.',
-                    'PROFILE_EXISTS',
-                    409
-                );
-            }
+            $user = $this->user;
 
             $data = $validator->validated();
             $data['user_id'] = $user->id;
-
-            $profile = MarriageProfile::create($data);
-
-            return $this->successResponse(
-                'Marriage profile created successfully.',
-                $profile,
-                201
-            );
-        } catch (\Exception $e) {
-            return $this->handleException($e, 'Failed to create profile');
-        }
-    }
-
-    /**
-     * Update the authenticated user's marriage profile.
-     */
-    public function update(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'religion_id'      => 'sometimes|required|integer|exists:religions,id',
-            'cast_id'          => 'nullable|integer|exists:casts,id',
-            'country_id'       => 'nullable|integer|exists:countries,id',
-            'city_id'          => 'nullable|integer|exists:cities,id',
-            'gotra_id'         => 'nullable|integer|exists:gotras,id',
-            'person'           => 'sometimes|required|in:public,private,only_me',
-            'bio'              => 'nullable|string',
-            'age'              => 'nullable|string|max:50',
-            'manage_by'        => 'nullable|string|max:255',
-            'manglik'          => 'nullable|string|max:50',
-            'highest_degree'   => 'nullable|string|max:255',
-            'occupation'       => 'nullable|string|max:255',
-        ]);
-
-        if ($validator->fails()) {
-            return $this->errorResponse(
-                'Validation failed.',
-                'VALIDATION_ERROR',
-                422,
-                $validator->errors()
-            );
-        }
-
-        try {
-            $profile = $request->user()->marriageProfile;
+            $profile = MarriageProfile::where('user_id', $this->userId)->first();
 
             if (!$profile) {
-                return $this->errorResponse(
-                    'Profile not found. Create one first.',
-                    'NOT_FOUND',
-                    404
-                );
+                $profile = MarriageProfile::create($data);
             }
-
             $profile->update($validator->validated());
 
             return $this->successResponse(
-                'Marriage profile updated successfully.',
+                'Marriage profile created successfully.',
                 $profile
             );
         } catch (\Exception $e) {
-            return $this->handleException($e, 'Failed to update profile');
+            return $this->handleException($e, 'Failed to create profile');
         }
     }
 }
