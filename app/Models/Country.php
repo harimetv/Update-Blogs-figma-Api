@@ -21,8 +21,8 @@ class Country extends Model
         return $this->belongsTo(State::class);
     }
 
-    public function country(): BelongsTo
+    public function city()
     {
-        return $this->belongsTo(Country::class);
+        return $this->hasMany(City::class,'country_id');
     }
 }

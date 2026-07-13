@@ -13,6 +13,8 @@ use App\Http\Controllers\FamilyMemberController;
 use App\Http\Controllers\FamilyProfileController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\ContactController;
+use App\Http\Controllers\Api\MarriageProfileController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -44,11 +46,15 @@ Route::prefix('v1')->group(function () {
         });
 
         Route::prefix('common')->group(function () {
-            Route::get('/get-industries', [CommonController::class, 'industries']);
-            Route::get('/get-constants', [CommonController::class, 'getConstants']);
-            Route::get('/get-platforms', [CommonController::class, 'getPlatforms']);
-            Route::get('/get-skills', [CommonController::class, 'getSkills']);
-            Route::get('/get-study', [CommonController::class, 'getStudy']);
+            Route::get('get-industries', [CommonController::class, 'industries']);
+            Route::get('get-constants', [CommonController::class, 'getConstants']);
+            Route::get('get-platforms', [CommonController::class, 'getPlatforms']);
+            Route::get('get-skills', [CommonController::class, 'getSkills']);
+            Route::get('get-study', [CommonController::class, 'getStudy']);
+            Route::get('get-religions', [CommonController::class, 'getReligions']);
+            Route::get('get-country', [CommonController::class, 'getCountry']);
+            Route::get('get-casts', [CommonController::class, 'getCasts']);
+            Route::get('get-gotras', [CommonController::class, 'getGotras']);
         });
 
         Route::prefix('profile')->group(function () {
@@ -60,10 +66,10 @@ Route::prefix('v1')->group(function () {
         });
 
         Route::prefix('social-links')->group(function () {
-            Route::get('/get-social-links', [SocialController::class, 'getSocialLinks']);
-            Route::post('/upsert', [SocialController::class, 'addSocialLink']);
-            Route::post('/update', [SocialController::class, 'updateSocialLink']);
-            Route::delete('/delete/{id}', [SocialController::class, 'deleteSocialLink']);
+            Route::get('get-social-links', [SocialController::class, 'getSocialLinks']);
+            Route::post('upsert', [SocialController::class, 'addSocialLink']);
+            Route::post('update', [SocialController::class, 'updateSocialLink']);
+            Route::delete('delete/{id}', [SocialController::class, 'deleteSocialLink']);
         });
 
         Route::prefix('work-experiences')->group(function () {
@@ -74,10 +80,10 @@ Route::prefix('v1')->group(function () {
         });
 
         Route::prefix('careers')->group(function () {
-            Route::get('/get-careers-details', [CareerController::class, 'index']);
-            Route::post('/upsert-career-details', [CareerController::class, 'storeOrUpdate']);
-            Route::get('/get-career-details-by-id/{careerId}', [CareerController::class, 'show']);
-            Route::post('/delete-career-details', [CareerController::class, 'deleteCareer']);
+            Route::get('get-careers-details', [CareerController::class, 'index']);
+            Route::post('upsert-career-details', [CareerController::class, 'storeOrUpdate']);
+            Route::get('get-career-details-by-id/{careerId}', [CareerController::class, 'show']);
+            Route::post('delete-career-details', [CareerController::class, 'deleteCareer']);
         });
 
         Route::apiResource('education-details', EducationDetailController::class);
@@ -88,6 +94,12 @@ Route::prefix('v1')->group(function () {
             Route::post('/', [FamilyProfileController::class, 'storeOrUpdate']); // Create/Update profile
             Route::delete('/', [FamilyProfileController::class, 'destroy']);
         });
+
+        Route::post('contact-info', [ContactController::class,'store']);
+
+        Route::get('get-marriage-profile', [MarriageProfileController::class, 'show']);
+        Route::post('update-marriage-profile', [MarriageProfileController::class, 'store']);
+        Route::put('marriage-profile', [MarriageProfileController::class, 'update']);
 
     });
 

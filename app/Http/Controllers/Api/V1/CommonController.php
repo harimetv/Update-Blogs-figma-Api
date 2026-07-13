@@ -7,7 +7,10 @@ use App\Models\Industry;
 use App\Models\Skill;
 use App\Models\SocialMediaCategory;
 use App\Models\Study;
-
+use App\Models\Religion;
+use App\Models\Country;
+use App\Models\Cast;
+use \App\Models\Gotra;
 class CommonController extends Controller
 {
     public function industries()
@@ -43,5 +46,33 @@ class CommonController extends Controller
         $study = Study::get();
 
         return $this->successResponse('Fetch study successful', $study);
+    }
+
+    public function getReligions()
+    {
+        $religions = Religion::select('id', 'name', 'code')->get();
+
+        return $this->successResponse('Fetch religions successful', $religions);
+    }
+
+    public function getCountry()
+    {
+        $countries = Country::with('city')->select('id', 'name')->get();
+
+        return $this->successResponse('Fetch countries successful', $countries);
+    }
+
+    public function getCasts()
+    {
+        $casts = Cast::select('id', 'name')->get();
+
+        return $this->successResponse('Fetch casts successful', $casts);
+    }
+
+    public function getGotras()
+    {
+        $gotras = Gotra::select('id', 'name')->get();
+
+        return $this->successResponse('Fetch gotras successful', $gotras);
     }
 }
