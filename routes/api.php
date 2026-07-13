@@ -2,31 +2,34 @@
 
 use App\Http\Controllers\Api\V1\Auth\AuthController;
 use App\Http\Controllers\Api\V1\CareerController;
-use App\Http\Controllers\Api\V1\Profile\ProfileController;
-use App\Http\Controllers\Api\V1\SocialController;
-use App\Http\Controllers\Api\V1\WorkExperienceController;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\V1\CommonController;
-use App\Http\Controllers\Api\V1\UserProfileController;
 use App\Http\Controllers\Api\V1\EducationDetailController;
 use App\Http\Controllers\Api\V1\HomeController;
+use App\Http\Controllers\Api\V1\Profile\ProfileController;
+use App\Http\Controllers\Api\V1\SocialController;
+use App\Http\Controllers\Api\V1\UserProfileController;
+use App\Http\Controllers\Api\V1\WorkExperienceController;
 use App\Http\Controllers\FamilyMemberController;
 use App\Http\Controllers\FamilyProfileController;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
+
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
-Route::prefix('v1/auth')->group(function () {
+Route::prefix('v1')->group(function () {
+    Route::prefix('auth')->group(function () {
 
-    Route::post('login', [AuthController::class, 'login']);
-    Route::post('register', [AuthController::class, 'register']);
-    Route::post('verify-otp', [AuthController::class, 'verifyOtp']);
-    Route::post('re-send-otp', [AuthController::class, 'reSendOtp']);
-    
-    Route::post('check-username', [AuthController::class, 'checkUsername']);
-    Route::post('check-email', [AuthController::class, 'checkEmail']);
-    Route::post('check-referral', [AuthController::class, 'checkReferral']);
+        Route::post('login', [AuthController::class, 'login']);
+        Route::post('register', [AuthController::class, 'register']);
+        Route::post('verify-otp', [AuthController::class, 'verifyOtp']);
+        Route::post('re-send-otp', [AuthController::class, 'reSendOtp']);
+
+        Route::post('check-username', [AuthController::class, 'checkUsername']);
+        Route::post('check-email', [AuthController::class, 'checkEmail']);
+        Route::post('check-referral', [AuthController::class, 'checkReferral']);
+    });
 
     Route::middleware('verify.jwt')->group(function () {
 
@@ -81,9 +84,9 @@ Route::prefix('v1/auth')->group(function () {
         Route::apiResource('family-members', FamilyMemberController::class);
 
         Route::prefix('family-profile')->group(function () {
-            Route::get('/', [FamilyProfileController::class, 'show']);                // Get profile
-            Route::post('/', [FamilyProfileController::class, 'storeOrUpdate']);     // Create/Update profile
-            Route::delete('/', [FamilyProfileController::class, 'destroy']);   
+            Route::get('/', [FamilyProfileController::class, 'show']);           // Get profile
+            Route::post('/', [FamilyProfileController::class, 'storeOrUpdate']); // Create/Update profile
+            Route::delete('/', [FamilyProfileController::class, 'destroy']);
         });
 
     });
