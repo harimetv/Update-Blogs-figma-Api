@@ -118,4 +118,18 @@ class AccountService
             throw new Exception($e->getMessage());
         }
     }
+
+    public function getCountries(): array
+    {
+        try {
+
+            $response = Http::withHeaders(['Content-Type' => 'application/json'])->get("{$this->baseUrl}/api/v1/countries");
+
+            return $response->json();
+
+        } catch (Exception $e) {
+
+            throw new Exception($e->getMessage());
+        }
+    }
 }
