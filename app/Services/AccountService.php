@@ -15,6 +15,8 @@ class AccountService
 
     public function login(array $data)
     {
+        // dd($data);
+        // dd($this->baseUrl);
         try {
             $response = Http::withHeaders(['Content-Type' => 'application/json'])->post("{$this->baseUrl}/api/v1/auth/login", $data);
 

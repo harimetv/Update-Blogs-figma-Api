@@ -6,8 +6,8 @@ use App\Http\Requests\V1\Auth\LoginRequest;
 use App\Services\AccountService;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
-use Illuminate\Support\Facades\Route;
 class AuthController extends Controller
 {
     protected AccountService $accountService;
@@ -20,14 +20,23 @@ class AuthController extends Controller
     {
         // $credentials = $request->getCredentials();
         $credentials = $request->validated();
+        // dd( $credentials);
         try {
 
             $response = $this->accountService->login($credentials);
-            
+
             return response()->json($response);
 
         } catch (Exception $e) {
 
+            Log::error('AuthController Error', [
+                'route'   => $request->path(),
+                'method'  => $request->method(),
+                'message' => $e->getMessage(),
+                'file'    => $e->getFile(),
+                'line'    => $e->getLine(),
+                
+            ]);
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage(),
