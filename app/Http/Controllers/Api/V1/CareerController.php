@@ -34,18 +34,18 @@ class CareerController extends Controller
     public function storeOrUpdate(CareerRequest $request)
     {
         // try {
-            $careerId = $request->career_id;
-            if ($careerId && ! $this->careerService->isCareerOwner($careerId)) {
-                return $this->errorResponse(
-                    'You are not authorized to update this career detail.',
-                    'UNAUTHORIZED',
-                    403
-                );
-            }
+            // $careerId = $request->career_id;
+            // if ($careerId && ! $this->careerService->isCareerOwner($careerId)) {
+            //     return $this->errorResponse(
+            //         'You are not authorized to update this career detail.',
+            //         'UNAUTHORIZED',
+            //         403
+            //     );
+            // }
 
-            $career = $this->careerService->saveCareer($request->validated(), $careerId);
+            $career = $this->careerService->saveCareer($request->validated());
 
-            $message = $careerId ? 'Career details updated successfully' : 'Career details created successfully';
+            $message = 'Career details updated successfully';
 
             return $this->successResponse(
                 $message,$career
