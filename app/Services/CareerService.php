@@ -67,9 +67,9 @@ class CareerService
     //         return $career->fresh();
     //     });
     // }
-    public function saveCareer(array $data, ?int $careerId = null): CareerDetail
+    public function saveCareer(array $data): CareerDetail
     {
-        return DB::transaction(function () use ($data, $careerId) {
+        return DB::transaction(function () use ($data) {
             // Handle media file upload
             $mediaPath = null;
             if (request()->hasFile('media')) {
@@ -77,27 +77,28 @@ class CareerService
                 $mediaPath = $file->store('media', 'public'); // stores in storage/app/public/media
             }
 
-            if ($careerId) {
-                $career = CareerDetail::findOrFail($careerId);
-                $career->update([
-                    'headline'           => $data['headline'] ?? $career->headline,
-                    'career_objective'   => $data['career_objective'] ?? $career->career_objective,
-                    'media'              => $mediaPath ?? $career->media,
-                    'skill_name'         => $data['skill_name'] ?? $career->skill_name,
-                    'skill_percentage'   => $data['skill_percentage'] ?? $career->skill_percentage,
-                    'person'             => $data['person'] ?? $career->person,
+            // if ($careerId) {
+            //     $career = CareerDetail::findOrFail($careerId);
+            //     $career->update([
+            //         'headline'           => $data['headline'] ?? $career->headline,
+            //         'career_objective'   => $data['career_objective'] ?? $career->career_objective,
+            //         'media'              => $mediaPath ?? $career->media,
+            //         'skill_name'         => $data['skill_name'] ?? $career->skill_name,
+            //         'skill_percentage'   => $data['skill_percentage'] ?? $career->skill_percentage,
+            //         'person'             => $data['person'] ?? $career->person,
+            //     ]);
+            // } else {
+                $career = CareerDetail::updateOrCreate(
+                    ['user_id' => $this->userId],
+                    [
+                        'headline'           => $data['headline'],
+                        'career_objective'   => $data['career_objective'],
+                        'media'              => $mediaPath,
+                        'skill_name'         => $data['skill_name'] ?? null,
+                        'skill_percentage'   => $data['skill_percentage'] ?? null,
+                        'person'             => $data['person'] ?? 'public',
                 ]);
-            } else {
-                $career = CareerDetail::create([
-                    'user_id'            => $this->userId,
-                    'headline'           => $data['headline'],
-                    'career_objective'   => $data['career_objective'],
-                    'media'              => $mediaPath,
-                    'skill_name'         => $data['skill_name'] ?? null,
-                    'skill_percentage'   => $data['skill_percentage'] ?? null,
-                    'person'             => $data['person'] ?? 'public',
-                ]);
-            }
+            // }
 
             return $career->fresh();
         });

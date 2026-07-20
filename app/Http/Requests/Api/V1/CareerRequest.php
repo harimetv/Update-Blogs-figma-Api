@@ -21,7 +21,6 @@ class CareerRequest extends FormRequest
     public function rules(): array
     {
         $rules = [
-            'career_id' => 'nullable|exists:career_details,id',
             'headline' => 'required|string|max:255',
             'career_objective' => 'required|string',
             // 'work_experience_ids' => 'nullable|array',
@@ -41,7 +40,6 @@ class CareerRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'career_id.exists' => 'The specified career detail does not exist.',
             // 'work_experience_ids.*.exists' => 'One or more work experiences do not exist.',
             // 'skills_id.exists' => 'The specified skill does not exist.',
             'person.in' => 'The person field must be one of: public, private, onlyme',

@@ -176,4 +176,22 @@ class AuthController extends Controller
             ], 500);
         }
     }
+
+    public function getCountries(Request $request)
+    {
+        try {
+
+            $response = $this->accountService->getCountries();
+
+            return response()->json($response);
+
+        } catch (Exception $e) {
+
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
 }

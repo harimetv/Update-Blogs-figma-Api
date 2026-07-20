@@ -31,6 +31,7 @@ Route::prefix('v1')->group(function () {
         Route::post('check-username', [AuthController::class, 'checkUsername']);
         Route::post('check-email', [AuthController::class, 'checkEmail']);
         Route::post('check-referral', [AuthController::class, 'checkReferral']);
+        Route::post('countries', [AuthController::class, 'getCountries']);
     });
 
     Route::middleware('verify.jwt')->group(function () {
@@ -52,9 +53,10 @@ Route::prefix('v1')->group(function () {
             Route::get('get-skills', [CommonController::class, 'getSkills']);
             Route::get('get-study', [CommonController::class, 'getStudy']);
             Route::get('get-religions', [CommonController::class, 'getReligions']);
-            Route::get('get-country', [CommonController::class, 'getCountry']);
+            // Route::get('get-country', [CommonController::class, 'getCountry']);
             Route::get('get-casts', [CommonController::class, 'getCasts']);
             Route::get('get-gotras', [CommonController::class, 'getGotras']);
+            Route::get('countries', [CommonController::class, 'getCountry']);
         });
 
         Route::prefix('profile')->group(function () {
