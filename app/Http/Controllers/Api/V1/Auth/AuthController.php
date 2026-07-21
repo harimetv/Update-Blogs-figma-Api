@@ -158,6 +158,25 @@ class AuthController extends Controller
         }
     }
 
+    public function checkNumber(Request $request)
+    {
+        try {
+
+            $response = $this->accountService->checkNumber(
+                $request->all()
+            );
+
+            return response()->json($response);
+
+        } catch (Exception $e) {
+
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
     public function me(Request $request)
     {
         try {

@@ -31,6 +31,7 @@ Route::prefix('v1')->group(function () {
         Route::post('check-username', [AuthController::class, 'checkUsername']);
         Route::post('check-email', [AuthController::class, 'checkEmail']);
         Route::post('check-referral', [AuthController::class, 'checkReferral']);
+        Route::post('check-number', [AuthController::class, 'checkNumber']);
         Route::post('countries', [AuthController::class, 'getCountries']);
     });
 

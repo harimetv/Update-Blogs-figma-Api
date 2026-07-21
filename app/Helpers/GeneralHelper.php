@@ -367,3 +367,19 @@ if (! function_exists('is_active')) {
         return AppConstants::ACTIVE;
     }
 }
+
+if (! function_exists('authUser')) {
+
+    function authUser()
+    {
+        return request()->attributes->get('user');
+    }
+}
+
+if (! function_exists('authUserId')) {
+
+    function authUserId()
+    {
+        return request()->attributes->get('user_id');
+    }
+}

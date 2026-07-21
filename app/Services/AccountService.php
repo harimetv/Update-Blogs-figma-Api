@@ -105,6 +105,19 @@ class AccountService
         }
     }
 
+    public function checkNumber(array $data): array
+    {
+        try {
+            $response = Http::withHeaders(['Content-Type' => 'application/json'])->post("{$this->baseUrl}/api/v1/auth/check-number", $data);
+
+            return $response->json();
+
+        } catch (Exception $e) {
+
+            throw new Exception($e->getMessage());
+        }
+    }
+
     public function me(string $token): array
     {
         try {

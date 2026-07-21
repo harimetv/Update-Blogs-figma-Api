@@ -46,8 +46,8 @@ class VerifyJwtToken
                     500
                 );
             }
-
             $payload = JWT::decode($token, new Key($publicKey, 'RS256'));
+            // dd($payload->user);
 
             $request->attributes->set('user_id', $payload->sub);
             $request->attributes->set('user', $payload->user);
