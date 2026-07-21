@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Services\User;
 
 use App\Repositories\User\ProfileRepository;
@@ -11,7 +10,7 @@ class ProfileService
 
     public function __construct(ProfileRepository $repo)
     {
-        $this->repo = $repo;
+        $this->repo          = $repo;
         $this->imageProvider = "local"; // or config
     }
 
@@ -32,12 +31,12 @@ class ProfileService
 
     public function profileUpdate($data, $userId)
     {
-        if (isset($data['image']) && !empty($data['image'])) {
-            $image = uploadImage($data['image'], 'images', $this->imageProvider);
+        if (isset($data['image']) && ! empty($data['image'])) {
+            $image         = uploadImage($data['image'], 'images', $this->imageProvider);
             $data['image'] = $image;
         }
-        if (isset($data['banner']) && !empty($data['banner'])) {
-            $banner = uploadImage($data['banner'], 'banners', $this->imageProvider);
+        if (isset($data['banner']) && ! empty($data['banner'])) {
+            $banner         = uploadImage($data['banner'], 'banners', $this->imageProvider);
             $data['banner'] = $banner;
         }
 
@@ -50,5 +49,10 @@ class ProfileService
         }
 
         return $this->repo->find(['user_id' => $userId]);
+    }
+
+    public function getUserProfile()
+    {
+        return authUser();
     }
 }

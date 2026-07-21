@@ -19,6 +19,8 @@ use App\Services\User\UserService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Constants\ResponseCode;
+use Exception;
+
 class UserProfileController extends Controller
 {
     protected $profileService;
@@ -104,16 +106,11 @@ class UserProfileController extends Controller
 
     public function getProfile(Request $request)
     {
-        // dd(authUser(), authUserId());
-        //  $userId = $request->attributes->get('user_id');
-    // $user = $request->attributes->get('user');
-
-    // dd($userId, $user);
-    //     dd($request->user);
         try {
             // Fetch the authenticated user's profile
-            $profile = $this->profileService->find(['user_id' => $this->userId]);
-
+            // $profile = $this->profileService->find(['user_id' => $this->userId]);
+            $profile = $this->profileService->getUserProfile();
+            
             return $this->successResponse(
                 'Profile fetched successfully',
                 $profile,
