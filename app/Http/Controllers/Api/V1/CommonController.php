@@ -27,6 +27,16 @@ class CommonController extends Controller
         return $this->successResponse('Fetch constants successful', $getConstant);
     }
 
+    public function blogpostTypes()
+{
+    $constants = getConstants();
+
+    return $this->successResponse(
+        'Fetch blog post types successful',
+        $constants['blog_post_types']
+    );
+}
+
     public function getPlatforms()
     {
         $platforms = SocialMediaCategory::where('status', true)->get();

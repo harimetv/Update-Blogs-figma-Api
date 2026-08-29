@@ -15,6 +15,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\ContactController;
 use App\Http\Controllers\Api\MarriageProfileController;
+use App\Http\Controllers\Api\V1\BlogController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -45,6 +46,8 @@ Route::prefix('v1')->group(function () {
             Route::get('languages', [UserProfileController::class, 'getAllLanguages']);
             Route::get('interests', [UserProfileController::class, 'getAllInterests']);
             Route::get('comfortables', [UserProfileController::class, 'getAllComfortables']);
+
+
         });
 
         Route::prefix('common')->group(function () {
@@ -58,6 +61,8 @@ Route::prefix('v1')->group(function () {
             Route::get('get-casts', [CommonController::class, 'getCasts']);
             Route::get('get-gotras', [CommonController::class, 'getGotras']);
             Route::get('countries', [CommonController::class, 'getCountry']);
+
+           Route::get('/blog-post-types', [CommonController::class, 'blogpostTypes']);
         });
 
         Route::prefix('profile')->group(function () {
@@ -104,6 +109,29 @@ Route::prefix('v1')->group(function () {
         Route::post('update-marriage-profile', [MarriageProfileController::class, 'store']);
         Route::put('marriage-profile', [MarriageProfileController::class, 'update']);
 
-    });
+
+
+       Route::prefix('blog')->group(function () {
+
+    // Dropdowns
+    Route::get( '/post-category',[BlogController::class, 'postCategory']);
+
+    Route::get('/category-dropdown', [BlogController::class, 'categoryDropdown']);
+
+    Route::get('/tag-dropdown', [BlogController::class, 'tagDropdown']);
+
+
+    // CRUD
+   Route::get('/', [BlogController::class, 'index']);
+   Route::post('/', [BlogController::class, 'store']);
+   Route::get('/{id}', [BlogController::class, 'show']);
+   Route::put('/{id}', [BlogController::class, 'update']);
+   Route::delete('/{id}', [BlogController::class, 'destroy']);
+
+
+});
+
+
+});
 
 });

@@ -110,7 +110,7 @@ class UserProfileController extends Controller
             // Fetch the authenticated user's profile
             // $profile = $this->profileService->find(['user_id' => $this->userId]);
             $profile = $this->profileService->getUserProfile();
-            
+
             return $this->successResponse(
                 'Profile fetched successfully',
                 $profile,
