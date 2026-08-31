@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Blog;
 use App\Models\PostCategory;
 use App\Models\Tag;
+
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -594,80 +595,6 @@ public function index()
 }
 
 
-public function postCategory()
-{
-    try {
 
-        $posts = Blog::select(
-            'id',
-            'title'
-        )
-        ->where('status', 'published')
-        ->orderBy('title')
-        ->get();
-
-
-        return response()->json([
-
-            'status' => true,
-
-            'message' => 'Post category fetched successfully',
-
-            'data' => $posts
-
-        ], 200);
-
-
-    } catch (\Exception $e) {
-
-        return response()->json([
-
-            'status' => false,
-
-            'message' => 'Failed to fetch post dropdown',
-
-            'error' => $e->getMessage()
-
-        ], 500);
-    }
-}
-
-
-    public function tagDropdown()
-{
-    try {
-
-        $tags = Tag::select(
-            'id',
-            'name'
-        )
-        ->orderBy('name')
-        ->get();
-
-
-        return response()->json([
-
-            'status' => true,
-
-            'message' => 'Tags dropdown fetched successfully',
-
-            'data' => $tags
-
-        ], 200);
-
-
-    } catch (\Exception $e) {
-
-        return response()->json([
-
-            'status' => false,
-
-            'message' => 'Failed to fetch tags',
-
-            'error' => $e->getMessage()
-
-        ], 500);
-    }
-}
 
 }

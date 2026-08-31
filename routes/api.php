@@ -16,6 +16,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\ContactController;
 use App\Http\Controllers\Api\MarriageProfileController;
 use App\Http\Controllers\Api\V1\BlogController;
+use App\Http\Controllers\Api\V1\PostTypeController;
+use App\Http\Controllers\Api\V1\PostController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -114,7 +116,8 @@ Route::prefix('v1')->group(function () {
        Route::prefix('blog')->group(function () {
 
     // Dropdowns
-    Route::get( '/post-category',[BlogController::class, 'postCategory']);
+
+   Route::get('/postType-dropdown',[PostTypeController::class, 'postTypeDropdown']);
 
     Route::get('/category-dropdown', [BlogController::class, 'categoryDropdown']);
 
@@ -130,6 +133,36 @@ Route::prefix('v1')->group(function () {
 
 
 });
+
+  Route::prefix('postType')->group(function () {
+
+
+   Route::get('/postType-dropdown',[PostTypeController::class, 'postTypeDropdown']);
+
+    Route::post('/postType', [PostTypeController::class, 'store']);
+
+
+});
+
+   Route::prefix('news')->group(function () {
+
+
+   Route::get('/postType-dropdown',[PostTypeController::class, 'postTypeDropdown']);
+
+    Route::post('/postType', [PostTypeController::class, 'store']);
+
+    Route::get('/post_TitleDropdown',[PostController::class, 'postTitleDropdown']);
+
+    Route::post('/store', [ PostController::class,'store']);
+
+    Route::put( '/{id}', [PostController::class, 'update'] );
+
+    Route::delete( '/{id}', [PostController::class, 'destroy'] );
+
+});
+
+
+
 
 
 });

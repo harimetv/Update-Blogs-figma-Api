@@ -11,14 +11,20 @@ return new class extends Migration
      */
     public function up(): void
     {
-       Schema::create('post_types', function (Blueprint $table) {
-        $table->id();
-        $table->string('name');
-        $table->string('slug')->unique();
-        $table->boolean('status')->default(true);
-        $table->timestamps();
-    });
+        Schema::create('post_types', function (Blueprint $table) {
 
+            $table->id();
+
+            $table->enum('post_type', [
+                'blog',
+                'news',
+                'reels',
+                'video'
+            ]);
+
+
+            $table->timestamps();
+        });
     }
 
     /**

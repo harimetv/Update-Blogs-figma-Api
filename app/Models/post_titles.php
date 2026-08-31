@@ -4,13 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class PostType extends Model
+class post_titles extends Model
 {
     protected $fillable = [
-        'post_type'
+        'title',
     ];
 
-     public function posts()
+    public function posts()
     {
         return $this->hasMany(Post::class);
     }

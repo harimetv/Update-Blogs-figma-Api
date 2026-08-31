@@ -38,4 +38,9 @@ class Blog extends Model
     {
         return $this->hasMany(BlogImage::class);
     }
+
+     public function postType()
+    {
+        return $this->belongsTo(PostType::class);
+    }
 }
